@@ -38,6 +38,11 @@ namespace MyLeaveManagement.Repository
             throw new NotImplementedException();
         }
 
+        public bool isExists(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool save()
         {
             var IsChanged = db.SaveChanges();

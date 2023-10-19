@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Mappings;
@@ -18,9 +19,8 @@ builder.Services.AddScoped<ILeaveHistoryRepository, LeaveHistoryRepository>();
 builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 #endregion
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services.AddAutoMapper(typeof(Maps));
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(/*options => { options.SignIn.RequireConfirmedAccount = false; options.Password=}*/) 
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 Console.WriteLine("----------------------------------------------");

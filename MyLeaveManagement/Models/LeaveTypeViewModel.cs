@@ -2,12 +2,13 @@
 
 namespace MyLeaveManagement.Models
 {
-    public class DetailsTypeViewModel
+    public class LeaveTypeViewModel
     {
 
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
 
 
@@ -16,11 +17,6 @@ namespace MyLeaveManagement.Models
 
 
     }
-    public class CreateTypeViewModel
-    {
-        [Required]
-        public string Name { get; set; }
-
-    }
+    
 }
 
