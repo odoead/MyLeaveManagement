@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
+@using MyLeaveManagement.Data;
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,8 @@
     <link href="~/font-awesome/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyLeaveManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
 
 </head>
 <body>
@@ -30,32 +32,34 @@
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class=" nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="" asp-action="">Apply for Leave</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="LeaveRequest" asp-action="Create">Apply for Leave</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            if (User.IsInRole("Admin")) { 
-                            <div class="dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Manage
-                                </a>
+                            if (User.IsInRole("Admin"))
+                            {
+                                <div class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Manage
+                                    </a>
 
-                                <ul class="dropdown-menu " aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item text-black" asp-controller="LeaveTypes" asp-action="Index">LeaveType</a></li>
-                                    <li><a class="dropdown-item text-black" href="#">Leave Allocation</a></li>
-                                    <li><a class="dropdown-item text-black" href="#">LeaveHistory</a></li>
-                                </ul>
-                                
-                            </div>
+                                    <ul class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+                                        <li><a class="dropdown-item text-black" asp-controller="LeaveTypes" asp-action="Index">LeaveType</a></li>
+                                        <li><a class="dropdown-item text-black" asp-controller="LeaveAllocation" asp-action="Index">Leave Allocation</a></li>
+                                        <li><a class="dropdown-item text-black" asp-controller="LeaveRequest" asp-action="Index">Leave Request</a></li>
+                                        <li><a class="dropdown-item text-black" asp-controller="LeaveAllocation" asp-action="ListEmployees">Emloyees</a></li>
+                                    </ul>
+
+                                </div>
                             }
                         }
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-page="/Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-page="/Privacy">Privacy</a>
-                            </li>
-                        </ul>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                    </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -76,6 +80,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

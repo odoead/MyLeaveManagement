@@ -2,13 +2,13 @@
 {
     public interface IReposBase<T>where T : class
     {
-        Task<ICollection<T>> GetAll();
-        Task<T> findByID(int id);
+        Task<ICollection<T>> GetAllAsync();
+       Task< T> findByIDAsync(int id);
 
-        Task<bool> Create(T entity);
-        Task<bool> update(T entity);
-        Task<bool> delete(T entity);
-        Task<bool> save();
-        Task<bool> isExists(int id);
+        Task<bool> CreateAsync(T entity);
+        Task<bool> updateAsync(T entity);
+        Task<bool> deleteAsync(T entity);
+        Task<bool> saveAsync();
+        Task<bool> isExistsAsync(int id);
     }
 }
