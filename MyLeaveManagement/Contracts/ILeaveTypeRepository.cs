@@ -2,8 +2,8 @@
 
 namespace MyLeaveManagement.Contracts
 {
-    public interface ILeaveTypeRepository: IReposBase<LeaveType>
+    public interface ILeaveTypeRepository : IReposBase<LeaveType>
     {
-        ICollection<LeaveType> GetEmloyeeByLeaveType(int id);
+        Task<ICollection<LeaveType>> GetEmloyeeByLeaveTypeAsync(int id);
     }
 }
