@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MyLeaveManagement.Data.Configuration
 {
-    public class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRequest>
+    public class LeaveHistoryConfiguration : IEntityTypeConfiguration<LeaveHistory>
     {
-        public void Configure(EntityTypeBuilder<LeaveRequest> builder)
+        public void Configure(EntityTypeBuilder<LeaveHistory> builder)
         {
             builder.HasKey(lh => lh.Id);
 

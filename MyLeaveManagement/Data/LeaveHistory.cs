@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyLeaveManagement.Data
 {
-    public class LeaveRequest
+    public class LeaveHistory
     {
+
+
 
 
         [Key]

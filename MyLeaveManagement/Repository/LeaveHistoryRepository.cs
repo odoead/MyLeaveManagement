@@ -3,37 +3,37 @@ using MyLeaveManagement.Data;
 
 namespace MyLeaveManagement.Repository
 {
-    public class LeaveAllocationRepository : ILeaveAllocationRepository
+    public class LeaveHistoryRepository : ILeaveHistoryRepository
     {
         private readonly ApplicationDbContext db;
 
-        public LeaveAllocationRepository(ApplicationDbContext db)
+        public LeaveHistoryRepository(ApplicationDbContext db)
         {
             this.db = db;
         }
-        public bool Create(LeaveAllocation entity)
+        public bool Create(LeaveHistory entity)
         {
-            db.LeaveAllocations.Add(entity);
+            db.leaveHistories.Add(entity);
             return save();
         }
 
-        public bool delete(LeaveAllocation entity)
+        public bool delete(LeaveHistory entity)
         {
-            db.LeaveAllocations.Remove(entity);
+            db.leaveHistories.Remove(entity);
             return save();
         }
 
-        public LeaveAllocation findByID(int id)
+        public LeaveHistory findByID(int id)
         {
-            return db.LeaveAllocations.Find();
+            return db.leaveHistories.Find();
         }
 
-        public ICollection<LeaveAllocation> GetAll()
+        public ICollection<LeaveHistory> GetAll()
         {
-            return db.LeaveAllocations.ToList();
+            return db.leaveHistories.ToList();
         }
 
-        public ICollection<LeaveAllocation> GetEmloyeeByLeaveType(int id)
+        public ICollection<LeaveHistory> GetEmloyeeByLeaveHistory(int id)
         {
             throw new NotImplementedException();
         }
@@ -50,7 +50,7 @@ namespace MyLeaveManagement.Repository
 
         }
 
-        public bool update(LeaveAllocation entity)
+        public bool update(LeaveHistory entity)
         {
             db.Update(entity);
             return save();

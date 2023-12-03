@@ -2,7 +2,7 @@
 
 namespace MyLeaveManagement.Contracts
 {
-    public interface ILeaveAllocationRepository: IReposBase<LeaveAllocation>
+    public interface ILeaveHistoryRepository: IReposBase<LeaveHistory>
     {
     }
 }

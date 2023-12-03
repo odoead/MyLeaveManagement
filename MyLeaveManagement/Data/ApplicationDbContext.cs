@@ -8,26 +8,25 @@ namespace MyLeaveManagement.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+            : base(options) 
         {
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new LeaveRequestConfiguration());
+            builder.ApplyConfiguration(new LeaveHistoryConfiguration());
             base.OnModelCreating(builder);
 
 
-            /* builder.Entity<LeaveHistory>().HasKey(x => new { x.RequestingEmpoyeeId, x.ApprovedById });
-             builder.Entity<LeaveHistory>()
-                 .HasOne(x=>x.RequestingEmployee)
-                 .WithMany(z=> z.RequestingEmployee)*/
+           /* builder.Entity<LeaveHistory>().HasKey(x => new { x.RequestingEmpoyeeId, x.ApprovedById });
+            builder.Entity<LeaveHistory>()
+                .HasOne(x=>x.RequestingEmployee)
+                .WithMany(z=> z.RequestingEmployee)*/
         }
 
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<LeaveRequest> LeaveRequests { get; set; }
-        public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet <Employee> Employees { get; set; }
+        public DbSet<LeaveHistory> leaveHistories { get; set; }
+        public DbSet<LeaveType>leaveTypes  { get; set; }
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
-
-
+        public DbSet<MyLeaveManagement.Models.LeaveTypeViewModel>? DetailsTypeViewModel { get; set; }
     }
 }
