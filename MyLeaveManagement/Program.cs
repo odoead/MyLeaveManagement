@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MyLeaveManagement;
 using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Mappings;
@@ -11,16 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-#region add ref and contracts for startup file 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(connectionString));
+#region add DI injection of controllers
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
-builder.Services.AddScoped<ILeaveHistoryRepository, LeaveHistoryRepository>();
+builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
 builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 #endregion
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAutoMapper(typeof(Maps));
-builder.Services.AddDefaultIdentity<IdentityUser>(/*options => { options.SignIn.RequireConfirmedAccount = false; options.Password=}*/) 
+builder.Services.AddDefaultIdentity<Employee>(/*options => { options.SignIn.RequireConfirmedAccount = false; options.Password =}*/)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 Console.WriteLine("----------------------------------------------");
@@ -29,7 +30,6 @@ foreach (var svs in builder.Services)
     Console.WriteLine(svs.ServiceType.FullName +"\n");
 }
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -49,6 +49,17 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    
+        var userManager = services.GetRequiredService<UserManager<Employee>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+         await SeedData.SeedAsync(userManager, roleManager);
+   
+}
+
 
 app.MapControllerRoute(
     name: "default",
