@@ -251,6 +251,9 @@ namespace MyLeaveManagement.Data.Migrations
                     b.Property<int>("NumberOfDays")
                         .HasColumnType("int");
 
+                    b.Property<int>("Period")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
 
                     b.HasIndex("EmployeeId");
@@ -260,7 +263,7 @@ namespace MyLeaveManagement.Data.Migrations
                     b.ToTable("LeaveAllocations");
                 });
 
-            modelBuilder.Entity("MyLeaveManagement.Data.LeaveHistory", b =>
+            modelBuilder.Entity("MyLeaveManagement.Data.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -302,7 +305,7 @@ namespace MyLeaveManagement.Data.Migrations
 
                     b.HasIndex("RequestingEmpoyeeId");
 
-                    b.ToTable("leaveHistories");
+                    b.ToTable("LeaveRequests");
                 });
 
             modelBuilder.Entity("MyLeaveManagement.Data.LeaveType", b =>
@@ -316,33 +319,16 @@ namespace MyLeaveManagement.Data.Migrations
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("leaveTypes");
-                });
-
-            modelBuilder.Entity("MyLeaveManagement.Models.LeaveTypeViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("DefaultDays")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DetailsTypeViewModel");
+                    b.ToTable("LeaveTypes");
                 });
 
             modelBuilder.Entity("MyLeaveManagement.Data.Employee", b =>
@@ -440,7 +426,7 @@ namespace MyLeaveManagement.Data.Migrations
                     b.Navigation("LeaveType");
                 });
 
-            modelBuilder.Entity("MyLeaveManagement.Data.LeaveHistory", b =>
+            modelBuilder.Entity("MyLeaveManagement.Data.LeaveRequest", b =>
                 {
                     b.HasOne("MyLeaveManagement.Data.Employee", "ApprovedBy")
                         .WithMany()
