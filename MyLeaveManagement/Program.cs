@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServ
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
 builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 #endregion
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAutoMapper(typeof(Maps));

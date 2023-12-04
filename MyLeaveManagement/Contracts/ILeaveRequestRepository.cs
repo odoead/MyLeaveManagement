@@ -2,7 +2,7 @@
 
 namespace MyLeaveManagement.Contracts
 {
-    public interface ILeaveRequestRepository: IReposBase<LeaveRequest>
+    public interface ILeaveRequestRepository : IReposBase<LeaveRequest>
     {
         Task<ICollection<LeaveRequest>> GetRequestsByEmployeeAsync(string employeeId);
     }

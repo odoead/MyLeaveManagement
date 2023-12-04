@@ -5,7 +5,7 @@ namespace MyLeaveManagement.Data
 {
     public class LeaveAllocation
     {
-        
+
 
         [Key]
         public int id { get; set; }
@@ -19,6 +19,6 @@ namespace MyLeaveManagement.Data
         [ForeignKey("LeaveTypeId")]
         public LeaveType LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
-        public int Period {  get; set; }
+        public int Period { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace MyLeaveManagement.Repository
 
         public async Task<bool> saveAsync()
         {
-            var IsChanged =await db.SaveChangesAsync();
+            var IsChanged = await db.SaveChangesAsync();
             return IsChanged > 0;
 
         }
