@@ -316,5 +316,10 @@ namespace MyLeaveManagement.Controllers
             };
             return View(model);
         }
+        protected override void Dispose(bool disposing)
+        {
+            unitOfWork.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }
