@@ -19,13 +19,13 @@ namespace MyLeaveManagement.Data
         public LeaveType LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
         public DateTime DateRequested { get; set; }
-        public DateTime DateProvided { get; set;}
+        public DateTime DateProvided { get; set; }
         public bool? IsApproved { get; set; }
         [ForeignKey("ApprovedById")]
         public Employee ApprovedBy { get; set; }
-        public string ApprovedById { get; set;}
+        public string ApprovedById { get; set; }
 
-        
+
 
 
     }

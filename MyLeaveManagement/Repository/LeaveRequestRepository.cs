@@ -39,13 +39,13 @@ namespace MyLeaveManagement.Repository
                 .ToListAsync();
         }
 
-       
+
 
         public async Task<ICollection<LeaveRequest>> GetRequestsByEmployeeAsync(string employeeId)
         {
             var request = await GetAllAsync();
-                
-            return request.Where(q => q.RequestingEmpoyeeId == employeeId).ToList();;
+
+            return request.Where(q => q.RequestingEmpoyeeId == employeeId).ToList(); ;
         }
 
         public async Task<bool> isExistsAsync(int id)

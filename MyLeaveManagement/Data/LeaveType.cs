@@ -6,7 +6,7 @@ namespace MyLeaveManagement.Data
     {
         [Key]
         public int Id { get; set; }
-        public int DefaultDays {  get; set; }
+        public int DefaultDays { get; set; }
         public string Name { get; set; }
         public DateTime? DateCreated { get; set; }
     }

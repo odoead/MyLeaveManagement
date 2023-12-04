@@ -37,7 +37,7 @@ namespace MyLeaveManagement.Repository
         {
             return await db.LeaveAllocations.Include(q => q.LeaveType)
                 .Include(q => q.Employee)
-                .FirstOrDefaultAsync(q=>q.id==id);
+                .FirstOrDefaultAsync(q => q.id == id);
         }
 
         public async Task<ICollection<LeaveAllocation>> GetAllAsync()
@@ -51,7 +51,7 @@ namespace MyLeaveManagement.Repository
         {
             var period = DateTime.Now.Year;
             var a = await GetAllAsync();
-            return  a.Where(q => q.EmployeeId == emloyeeid && q.Period == period).ToList();
+            return a.Where(q => q.EmployeeId == emloyeeid && q.Period == period).ToList();
         }
 
         public async Task<LeaveAllocation> GetLeaveAllocationsByEmloyeeAndTypeAsync(string emloyeeid, int leaveTypeId)

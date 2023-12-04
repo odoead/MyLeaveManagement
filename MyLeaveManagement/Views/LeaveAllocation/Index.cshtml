@@ -15,26 +15,27 @@
             <th>
                 LeaveTypes
             </th>
-            
+
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.LeaveTypes) {
-        <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            
-            <td>
+        @foreach (var item in Model.LeaveTypes)
+        {
+            <tr>
 
-                <a class="btn btn-outline-success" asp-action="SetLeave" asp-route-id="@item.Id">
-                    <i class="fa fa-pen"></i>Allocate to emloyees
-                </a>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
 
-            </td>
-        </tr>
-}
+                <td>
+
+                    <a class="btn btn-outline-success" asp-action="SetLeave" asp-route-id="@item.Id">
+                        <i class="fa fa-pen"></i>Allocate to emloyees
+                    </a>
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

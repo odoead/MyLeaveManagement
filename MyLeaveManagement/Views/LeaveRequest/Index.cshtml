@@ -51,11 +51,11 @@
 <br />
 <hr />
 <h1>Leave Request Log</h1>
-<table id="tblData"class="table">
+<table id="tblData" class="table">
     <thead>
         <tr>
             <th>
-                 Name
+                Name
             </th>
             <th>
                 StartDate
@@ -64,12 +64,12 @@
                 EndDate
             </th>
             <th>
-               LeaveType
+                LeaveType
             </th>
             <th>
                 DateRequested
             </th>
-            
+
             <th>
                 Approval status
             </th>
@@ -77,33 +77,34 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.LeaveRequests) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestingEmployee.FirstName)
-                @Html.DisplayFor(modelItem => item.RequestingEmployee.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeaveType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateRequested)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Approved)
-            </td>
-            
-            <td>
-                <a class =" btn btn-outline-primary"asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.LeaveRequests)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestingEmployee.FirstName)
+                    @Html.DisplayFor(modelItem => item.RequestingEmployee.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRequested)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Approved)
+                </td>
+
+                <td>
+                    <a class=" btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

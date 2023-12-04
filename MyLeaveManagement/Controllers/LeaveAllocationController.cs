@@ -45,7 +45,7 @@ namespace MyLeaveManagement.Controllers
                     Period = DateTime.Now.Year
                 };
                 var LeaveAllocation = _mapper.Map<LeaveAllocation>(allocation);
-               await _leaveAllocationRepository.CreateAsync(LeaveAllocation);
+                await _leaveAllocationRepository.CreateAsync(LeaveAllocation);
             }
             return RedirectToAction(nameof(Index));
 
@@ -116,7 +116,7 @@ namespace MyLeaveManagement.Controllers
                 {
                     ModelState.AddModelError("", "Error while editing");
                 }
-                return RedirectToAction(nameof(Details),new {id=model.EmployeeId });
+                return RedirectToAction(nameof(Details), new { id = model.EmployeeId });
             }
             catch
             {

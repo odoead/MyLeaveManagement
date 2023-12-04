@@ -11,8 +11,8 @@ namespace MyLeaveManagement.Models
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
         [Required]
-        [Display(Name="Default number of days")]
-        [Range(1,25,ErrorMessage ="Enter valid days")]
+        [Display(Name = "Default number of days")]
+        [Range(1, 25, ErrorMessage = "Enter valid days")]
         public int DefaultDays { get; set; }
 
 
@@ -20,6 +20,6 @@ namespace MyLeaveManagement.Models
 
 
     }
-    
+
 }
 
