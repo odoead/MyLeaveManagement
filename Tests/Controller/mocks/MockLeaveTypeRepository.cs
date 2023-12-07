@@ -41,23 +41,6 @@ namespace Tests.mocks
 
             return mock;
         }
-       /* public static Mock<IMapper> GetMapper()
-        {
-            var mappingProfile = new Mock<IMapper>();
-            var _LeaveTypesVM = new List<LeaveTypeViewModel>()
-            {
-                new LeaveTypeViewModel()
-                {
-                    DateCreated = Convert.ToDateTime("02.12.2023 1:32:57"),
-                    DefaultDays = 10,
-                    Id = 1,
-                    Name="sick leave"
-                }
-            };
-            mappingProfile.Setup(mapper => mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(It.IsAny<List<LeaveType>>()))
-                       .Returns(_LeaveTypesVM);
-            return mappingProfile;
-        }*/
     }
 
 }

@@ -70,7 +70,7 @@ namespace MyLeaveManagement.Controllers
                 var user = _userManager.GetUserAsync(User).Result;
                 var leaveRequest = await _leaveRequestRepository.FindByIdAsync(id);
                 var allocation = await _leaveAllocationRepository.
-                    GetLeaveAllocationsByEmloyeeAndTypeAsync(leaveRequest.RequestingEmpoyeeId, leaveRequest.Id);
+                    GetLeaveAllocationByEmloyeeAndTypeAsync(leaveRequest.RequestingEmpoyeeId, leaveRequest.Id);
                 var leaveTypeId = leaveRequest.LeaveTypeId;
                 leaveRequest.IsApproved = true;
                 leaveRequest.ApprovedById = user.Id;
@@ -176,7 +176,7 @@ namespace MyLeaveManagement.Controllers
                 var employee = await _userManager.GetUserAsync(User);
 
                 var allocation = await _leaveAllocationRepository
-                    .GetLeaveAllocationsByEmloyeeAndTypeAsync(employee.Id, model.LeaveTypeId);
+                    .GetLeaveAllocationByEmloyeeAndTypeAsync(employee.Id, model.LeaveTypeId);
 
                 int daysRequsted =
                     (int)(endDate.Date - startDate.Date).TotalDays;

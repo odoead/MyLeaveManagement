@@ -6,7 +6,7 @@ namespace MyLeaveManagement.Contracts
     {
         Task<bool> CheckAllocationAsync(int leavetypeid, string emloyeeid);
         Task<ICollection<LeaveAllocation>> GetLeaveAllocationsByEmloyeeAsync(string emloyeeid);
-        Task<LeaveAllocation> GetLeaveAllocationsByEmloyeeAndTypeAsync(string emloyeeid,int leaveTypeId);
+        Task<LeaveAllocation> GetLeaveAllocationByEmloyeeAndTypeAsync(string emloyeeid,int leaveTypeId);
 
     }
 }

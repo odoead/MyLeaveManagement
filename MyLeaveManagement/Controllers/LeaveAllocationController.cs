@@ -104,13 +104,12 @@ namespace MyLeaveManagement.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
                 var Record = await _leaveAllocationRepository.FindByIdAsync(model.id);
                 Record.NumberOfDays = model.NumberOfDays;
-                /// var allocation = _mapper.Map<LeaveAllocation>(model);
                 var isSuccess = await _leaveAllocationRepository.UpdateAsync(Record);
                 if (!isSuccess)
                 {

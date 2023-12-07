@@ -130,8 +130,7 @@ namespace Tests
                 DateCreated = Convert.ToDateTime("02.12.2023 1:32:57"),
                 DefaultDays = 10,
                 Id = 1,
-                Name = "sick leave"
-
+                Name = "sick leave",
             };
             //ACT
             await leaveTypesController.Create(leaveTypeVM);
@@ -152,10 +151,9 @@ namespace Tests
                 DateCreated = Convert.ToDateTime("02.12.2023 1:32:57"),
                 DefaultDays = 10,
                 Id = 1,
-                Name = "sick leave"
-
+                Name = "sick leave",
             };
-            //ACR
+            //ACT
             var result = await leaveTypesController.Create(leaveTypeVM);
             //ASSERT
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
@@ -171,8 +169,8 @@ namespace Tests
             //ACT
             var result = await leaveTypesController.Details(id);
             //ASSERT
-            mockLeaveTypeRepo.Verify(x => x.IsExistsAsync(id), Times.Once);
 
+            mockLeaveTypeRepo.Verify(x => x.IsExistsAsync(id), Times.Once);
             Assert.NotNull(result);
             var viewResult = Assert.IsType<ViewResult>(result);
             var leave = Assert.IsType<LeaveTypeViewModel>(viewResult.Model);
@@ -225,10 +223,13 @@ namespace Tests
         public async Task EditGET_InvalidModelState_ReturnsNotFound()
         {
             //ARRANGE
+
             int id = 10;
             //ACT
+
             var result = await leaveTypesController.Details(id);
             //ASSERT
+
             Assert.NotNull(result);
             Assert.IsType<NotFoundResult>(result);
         }
@@ -274,7 +275,7 @@ namespace Tests
             //ASSERT
             mockLeaveTypeRepo.Verify(x => x.UpdateAsync(It.IsAny<LeaveType>()), Times.Never);
         }
-        
+
         [Fact]
         public async Task EditPOST_ModelStateValid_EitLeaveTypeCalledOnce()
         {
@@ -295,7 +296,6 @@ namespace Tests
             await leaveTypesController.Edit(leaveTypeVM);
             //ASSERT
             mockLeaveTypeRepo.Verify(x => x.UpdateAsync(It.IsAny<LeaveType>()), Times.Once);
-
             Assert.Equal(leaveType.Id, leaveTypeVM.Id);
             Assert.Equal(leaveType.DefaultDays, leaveTypeVM.DefaultDays);
             Assert.Equal(leaveType.Name, leaveTypeVM.Name);
@@ -313,7 +313,7 @@ namespace Tests
                 Name = "sick leave"
 
             };
-            //ACR
+            //ACT
             var result = await leaveTypesController.Edit(leaveTypeVM);
             //ASSERT
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);

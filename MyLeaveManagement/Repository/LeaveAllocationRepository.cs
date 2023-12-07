@@ -54,7 +54,7 @@ namespace MyLeaveManagement.Repository
             return a.Where(q => q.EmployeeId == emloyeeid && q.Period == period).ToList();
         }
 
-        public async Task<LeaveAllocation> GetLeaveAllocationsByEmloyeeAndTypeAsync(string emloyeeid, int leaveTypeId)
+        public async Task<LeaveAllocation> GetLeaveAllocationByEmloyeeAndTypeAsync(string emloyeeid, int leaveTypeId)
         {
             var period = DateTime.Now.Year;
             var allocations = await GetAllAsync();

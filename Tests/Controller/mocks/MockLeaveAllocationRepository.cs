@@ -1,4 +1,5 @@
 ﻿using Moq;
+using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Repository;
 using System;
@@ -13,9 +14,9 @@ namespace Tests.mocks
     internal class MockLeaveAllocationRepository
     {
 
-        public static Mock<LeaveAllocationRepository> GetMock()
+        public static Mock<ILeaveAllocationRepository> GetMock()
         {
-            var mock = new Mock<LeaveAllocationRepository>();
+            var mock = new Mock<ILeaveAllocationRepository>();
 
             var allocations = new List<LeaveAllocation>()
             {
@@ -24,12 +25,12 @@ namespace Tests.mocks
                     Id = 1,
                     DateCreated =Convert.ToDateTime( "02.12.2023 1:24:32"),
                     NumberOfDays= 20,
-                    EmployeeId= "a3fb221e-c2b8-4e64-9d78-0a0427822ad7",
+                    EmployeeId= "a3f",
                     Period=2023,
                     LeaveTypeId=1,
                     Employee= new Employee()
                     {
-                        Id="ba9581c0",
+                        Id="a3f",
                         DateJoined=Convert.ToDateTime("02.12.2023 1:32:57"),
                         Email="request@gmail.com",
                         UserName="request@gmail.com",
@@ -50,25 +51,28 @@ namespace Tests.mocks
             };
 
             mock.Setup(m => m.CheckAllocationAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync((int leavetypeid, string emloyeeid) => allocations.Exists(q => q.EmployeeId == emloyeeid
+            && q.LeaveTypeId == leavetypeid ));
             mock.Setup(m => m.CreateAsync(It.IsAny<LeaveAllocation>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync(true);
             mock.Setup(m => m.DeleteAsync(It.IsAny<LeaveAllocation>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync(true);
             mock.Setup(m => m.FindByIdAsync(It.IsAny<int>()))
-               .Returns((LeaveAllocation Alloc) => allocations.FirstOrDefault(a => a.Id == Alloc.Id));
+               .ReturnsAsync((int T) => allocations.FirstOrDefault(a => a.Id == T));
             mock.Setup(m => m.GetAllAsync())
-                .Returns((ICollection<LeaveAllocation> allocs) => allocs == allocations);
+                .ReturnsAsync(allocations);
+
+
             mock.Setup(m => m.GetLeaveAllocationsByEmloyeeAsync(It.IsAny<string>()))
-               .Returns((string id) => allocations.Where(a => a.Employee.Id == id).ToList());
-            mock.Setup(m => m.GetLeaveAllocationsByEmloyeeAndTypeAsync(It.IsAny<string>(), It.IsAny<int>()))
-                .Returns((string id, int type) => allocations.Where(a => a.Employee.Id == id && a.LeaveType.Id == type).ToList());
+               .ReturnsAsync((string id) => allocations.Where(a => a.EmployeeId == id).ToList());
+            mock.Setup(m => m.GetLeaveAllocationByEmloyeeAndTypeAsync(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync((string id, int type) => allocations.FirstOrDefault(a => a.EmployeeId == id && a.LeaveType.Id == type));
             mock.Setup(m => m.IsExistsAsync(It.IsAny<int>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync((int T) => allocations.Exists(a => a.Id == T));
             mock.Setup(m => m.SaveAsync())
-                .Returns((bool q) => q == true);
+                .ReturnsAsync(true);
             mock.Setup(m => m.UpdateAsync(It.IsAny<LeaveAllocation>()))
-               .Returns((bool q) => q == true);
+               .ReturnsAsync(true);
 
             return mock;
         }
