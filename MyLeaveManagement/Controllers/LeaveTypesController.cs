@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
@@ -12,17 +11,18 @@ namespace MyLeaveManagement.Controllers
     public class LeaveTypesController : Controller
     {
         private readonly IMapper mapper;
-        private readonly ILeaveTypeRepository Repository;
+        private readonly ILeaveTypeRepository LeaveTypeRepository;
         public LeaveTypesController(IMapper mapper, ILeaveTypeRepository repository)
         {
             this.mapper = mapper;
-            Repository = repository;
+            LeaveTypeRepository = repository;
         }
+
         // GET: LeaveTypesController
         public async Task<ActionResult> Index()
         {
-            var q = await Repository.GetAllAsync();
-            var leavetypes = q.ToList();
+            var leaveTypes = await LeaveTypeRepository.GetAllAsync();
+            var leavetypes = leaveTypes.ToList();
             var model = mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leavetypes);
             return View(model);
         }
@@ -30,12 +30,12 @@ namespace MyLeaveManagement.Controllers
         // GET: LeaveTypesController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var q = await Repository.isExistsAsync(id);
-            if (!q)
+            var leaveTypes = await LeaveTypeRepository.IsExistsAsync(id);
+            if (!leaveTypes)
             {
                 return NotFound();
             }
-            var leavetype = await Repository.findByIDAsync(id);
+            var leavetype = await LeaveTypeRepository.FindByIdAsync(id);
             var model = mapper.Map<LeaveTypeViewModel>(leavetype);
 
             return View(model);
@@ -60,7 +60,7 @@ namespace MyLeaveManagement.Controllers
                 }
                 var leaveType = mapper.Map<LeaveType>(model);
                 leaveType.DateCreated = DateTime.Now;
-                var isSuccess = await Repository.CreateAsync(leaveType);
+                var isSuccess = await LeaveTypeRepository.CreateAsync(leaveType);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "something went wrong");
@@ -77,12 +77,12 @@ namespace MyLeaveManagement.Controllers
         // GET: LeaveTypesController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var q = await Repository.isExistsAsync(id);
+            var q = await LeaveTypeRepository.IsExistsAsync(id);
             if (!q)
             {
                 return NotFound();
             }
-            var leaveType = await Repository.findByIDAsync(id);
+            var leaveType = await LeaveTypeRepository.FindByIdAsync(id);
             var model = mapper.Map<LeaveTypeViewModel>(leaveType);
             return View(model);
         }
@@ -99,7 +99,7 @@ namespace MyLeaveManagement.Controllers
                     return View(model);
                 }
                 var leaveType = mapper.Map<LeaveType>(model);
-                var isSuccess = await Repository.updateAsync(leaveType);
+                var isSuccess = await LeaveTypeRepository.UpdateAsync(leaveType);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "something went wrong");
@@ -117,12 +117,12 @@ namespace MyLeaveManagement.Controllers
         // GET: LeaveTypesController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            var type = await Repository.findByIDAsync(id);
+            var type = await LeaveTypeRepository.FindByIdAsync(id);
             if (type == null)
             {
                 return NotFound();
             }
-            bool isSuccess = await Repository.deleteAsync(type);
+            bool isSuccess = await LeaveTypeRepository.DeleteAsync(type);
             if (!isSuccess)
             {
                 return BadRequest();
@@ -146,12 +146,12 @@ namespace MyLeaveManagement.Controllers
         {
             try
             {
-                var type = await Repository.findByIDAsync(id);
+                var type = await LeaveTypeRepository.FindByIdAsync(id);
                 if (type == null)
                 {
                     return NotFound();
                 }
-                bool isSuccess = await Repository.deleteAsync(type);
+                bool isSuccess = await LeaveTypeRepository.DeleteAsync(type);
                 if (!isSuccess)
                 {
                     return View(model);

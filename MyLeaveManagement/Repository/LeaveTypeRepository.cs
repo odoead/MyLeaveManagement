@@ -1,6 +1,6 @@
 ﻿using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyLeaveManagement.Repository
 {
@@ -15,31 +15,28 @@ namespace MyLeaveManagement.Repository
         public async Task<bool> CreateAsync(LeaveType entity)
         {
             await db.LeaveTypes.AddAsync(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
 
-        public async Task<bool> deleteAsync(LeaveType entity)
+        public async Task<bool> DeleteAsync(LeaveType entity)
         {
             db.LeaveTypes.Remove(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
 
-        public async Task<LeaveType> findByIDAsync(int id)
+        public async Task<LeaveType> FindByIdAsync(int id)
         {
             return await db.LeaveTypes.FindAsync(id);
         }
 
         public async Task<ICollection<LeaveType>> GetAllAsync()
         {
-            return db.LeaveTypes.ToList();
+            return await db.LeaveTypes.ToListAsync();
         }
 
-        public Task<ICollection<LeaveType>> GetEmloyeeByLeaveTypeAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public async Task<bool> isExistsAsync(int id)
+        public async Task<bool> IsExistsAsync(int id)
         {
             var exists = await db.LeaveTypes.AnyAsync(a => a.Id == id);
             return exists;
@@ -47,17 +44,17 @@ namespace MyLeaveManagement.Repository
 
 
 
-        public async Task<bool> saveAsync()
+        public async Task<bool> SaveAsync()
         {
             var IsChanged = await db.SaveChangesAsync();
             return IsChanged > 0;
 
         }
 
-        public async Task<bool> updateAsync(LeaveType entity)
+        public async Task<bool> UpdateAsync(LeaveType entity)
         {
             db.Update(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
     }
 }

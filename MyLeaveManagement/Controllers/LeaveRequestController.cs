@@ -59,7 +59,7 @@ namespace MyLeaveManagement.Controllers
         // GET: LeaveRequestController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var leaveRequest = await _leaveAllocationRepository.findByIDAsync(id);
+            var leaveRequest = await _leaveAllocationRepository.FindByIdAsync(id);
             var model = _mapper.Map<LeaveRequestViewModel>(leaveRequest);
             return View(model);
         }
@@ -68,7 +68,7 @@ namespace MyLeaveManagement.Controllers
             try
             {
                 var user = _userManager.GetUserAsync(User).Result;
-                var leaveRequest = await _leaveRequestRepository.findByIDAsync(id);
+                var leaveRequest = await _leaveRequestRepository.FindByIdAsync(id);
                 var allocation = await _leaveAllocationRepository.
                     GetLeaveAllocationsByEmloyeeAndTypeAsync(leaveRequest.RequestingEmpoyeeId, leaveRequest.Id);
                 var leaveTypeId = leaveRequest.LeaveTypeId;
@@ -77,8 +77,8 @@ namespace MyLeaveManagement.Controllers
                 leaveRequest.DateRequested = DateTime.Now;
                 int daysRequsted = (int)(leaveRequest.EndDate - leaveRequest.StartDate).TotalDays;
                 allocation.NumberOfDays -= daysRequsted;
-                await _leaveRequestRepository.updateAsync(leaveRequest);
-                await _leaveAllocationRepository.updateAsync(allocation);
+                await _leaveRequestRepository.UpdateAsync(leaveRequest);
+                await _leaveAllocationRepository.UpdateAsync(allocation);
 
                 return RedirectToAction(nameof(Index));
 
@@ -95,11 +95,11 @@ namespace MyLeaveManagement.Controllers
             try
             {
                 var user = await _userManager.GetUserAsync(User);
-                var leaveRequest = await _leaveRequestRepository.findByIDAsync(id);
+                var leaveRequest = await _leaveRequestRepository.FindByIdAsync(id);
                 leaveRequest.IsApproved = false;
                 leaveRequest.ApprovedById = user.Id;
                 leaveRequest.DateRequested = DateTime.Now;
-                var isSuccess = await _leaveRequestRepository.updateAsync(leaveRequest);
+                var isSuccess = await _leaveRequestRepository.UpdateAsync(leaveRequest);
 
                 return RedirectToAction(nameof(Index));
 

@@ -8,7 +8,7 @@ namespace MyLeaveManagement.Data
 
 
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         public int NumberOfDays { get; set; }
         public DateTime DateCreated { get; set; }
 

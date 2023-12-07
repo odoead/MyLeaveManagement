@@ -6,7 +6,7 @@ namespace MyLeaveManagement.Models
     {
 
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }

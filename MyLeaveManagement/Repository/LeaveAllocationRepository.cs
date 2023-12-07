@@ -24,20 +24,20 @@ namespace MyLeaveManagement.Repository
         public async Task<bool> CreateAsync(LeaveAllocation entity)
         {
             await db.LeaveAllocations.AddAsync(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
 
-        public async Task<bool> deleteAsync(LeaveAllocation entity)
+        public async Task<bool> DeleteAsync(LeaveAllocation entity)
         {
             db.LeaveAllocations.Remove(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
 
-        public async Task<LeaveAllocation> findByIDAsync(int id)
+        public async Task<LeaveAllocation> FindByIdAsync(int id)
         {
             return await db.LeaveAllocations.Include(q => q.LeaveType)
                 .Include(q => q.Employee)
-                .FirstOrDefaultAsync(q => q.id == id);
+                .FirstOrDefaultAsync(q => q.Id == id);
         }
 
         public async Task<ICollection<LeaveAllocation>> GetAllAsync()
@@ -63,23 +63,23 @@ namespace MyLeaveManagement.Repository
 
         }
 
-        public async Task<bool> isExistsAsync(int id)
+        public async Task<bool> IsExistsAsync(int id)
         {
-            return await db.LeaveAllocations.AnyAsync(q => q.id == id);
+            return await db.LeaveAllocations.AnyAsync(q => q.Id == id);
         }
 
-        public async Task<bool> saveAsync()
+        public async Task<bool> SaveAsync()
         {
             var IsChanged = await db.SaveChangesAsync();
             return IsChanged > 0;
 
         }
 
-        public async Task<bool> updateAsync(LeaveAllocation entity)
+        public async Task<bool> UpdateAsync(LeaveAllocation entity)
         {
             //db.LeaveAllocations.Update(entity);
             db.Update(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
     }
 }

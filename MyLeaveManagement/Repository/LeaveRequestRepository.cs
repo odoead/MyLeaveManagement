@@ -1,6 +1,6 @@
 ﻿using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyLeaveManagement.Repository
 {
@@ -15,21 +15,27 @@ namespace MyLeaveManagement.Repository
         public async Task<bool> CreateAsync(LeaveRequest entity)
         {
             await db.LeaveRequests.AddAsync(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
 
-        public async Task<bool> deleteAsync(LeaveRequest entity)
+        public async Task<bool> DeleteAsync(LeaveRequest entity)
         {
             db.LeaveRequests.Remove(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
 
-        public async Task<LeaveRequest> findByIDAsync(int id)
+        public async Task<LeaveRequest> FindByIdAsync(int id)
         {
-            return await db.LeaveRequests
+            /*return await db.LeaveRequests
                 .Include(q => q.RequestingEmployee).
                 Include(q => q.ApprovedById).Include(q => q.LeaveType)
+                .FirstOrDefaultAsync(q => q.Id == id);*/
+            var leaveRequest = await db.LeaveRequests
+                .Include(q => q.RequestingEmployee)
+                .Include(q => q.ApprovedBy)
+                .Include(q => q.LeaveType)
                 .FirstOrDefaultAsync(q => q.Id == id);
+            return leaveRequest;
         }
 
         public async Task<ICollection<LeaveRequest>> GetAllAsync()
@@ -48,22 +54,22 @@ namespace MyLeaveManagement.Repository
             return request.Where(q => q.RequestingEmpoyeeId == employeeId).ToList(); ;
         }
 
-        public async Task<bool> isExistsAsync(int id)
+        public async Task<bool> IsExistsAsync(int id)
         {
             var exists = await db.LeaveRequests.AnyAsync(q => q.Id == id);
             return exists;
         }
 
-        public async Task<bool> saveAsync()
+        public async Task<bool> SaveAsync()
         {
             var IsChanged = await db.SaveChangesAsync();
             return IsChanged > 0;
 
         }
-        public async Task<bool> updateAsync(LeaveRequest entity)
+        public async Task<bool> UpdateAsync(LeaveRequest entity)
         {
             db.Update(entity);
-            return await saveAsync();
+            return await SaveAsync();
         }
     }
 }

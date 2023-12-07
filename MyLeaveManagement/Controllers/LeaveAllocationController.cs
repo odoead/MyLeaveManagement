@@ -29,7 +29,7 @@ namespace MyLeaveManagement.Controllers
 
         public async Task<ActionResult> SetLeave(int id)
         {
-            var leavetype = await _LeaveTypeRepository.findByIDAsync(id);
+            var leavetype = await _LeaveTypeRepository.FindByIdAsync(id);
             var emloyees = _userManager.GetUsersInRoleAsync("Employee");
 
             foreach (var e in await emloyees)
@@ -92,7 +92,7 @@ namespace MyLeaveManagement.Controllers
         // GET: LeaveAllocationController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var leaveallocation = await _leaveAllocationRepository.findByIDAsync(id);
+            var leaveallocation = await _leaveAllocationRepository.FindByIdAsync(id);
             var model = _mapper.Map<EditLeaveAllocationViewModel>(leaveallocation);
             return View(model);
         }
@@ -108,10 +108,10 @@ namespace MyLeaveManagement.Controllers
                 {
                     return View(model);
                 }
-                var Record = await _leaveAllocationRepository.findByIDAsync(model.id);
+                var Record = await _leaveAllocationRepository.FindByIdAsync(model.id);
                 Record.NumberOfDays = model.NumberOfDays;
                 /// var allocation = _mapper.Map<LeaveAllocation>(model);
-                var isSuccess = await _leaveAllocationRepository.updateAsync(Record);
+                var isSuccess = await _leaveAllocationRepository.UpdateAsync(Record);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Error while editing");
