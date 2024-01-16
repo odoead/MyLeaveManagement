@@ -26,8 +26,9 @@ namespace MyLeaveManagement.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<Employee> _userManager;
 
-        public LeaveRequestController(ILeaveRequestRepository leaveRequestRepository,
-            IMapper mapper, UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, ILeaveAllocationRepository leaveAllocation)
+        public LeaveRequestController(IMapper mapper, UserManager<Employee> userManager,
+            ILeaveRequestRepository leaveRequestRepository, ILeaveTypeRepository leaveTypeRepository,
+            ILeaveAllocationRepository leaveAllocation)
         {
             _leaveRequestRepository = leaveRequestRepository;
             _mapper = mapper;
@@ -44,9 +45,9 @@ namespace MyLeaveManagement.Controllers
             var model = new AdminLeaveRequestViewViewModel
             {
                 TotalRequests = leaveRequestsModel.Count,
-                ApprovedRequests = leaveRequestsModel.Where(q => q.Approved == true).Count(),
-                PendingRequests = leaveRequestsModel.Where(q => q.Approved == null).Count(),
-                RejectedRequests = leaveRequestsModel.Where(q => q.Approved == false).Count(),
+                ApprovedRequests = leaveRequestsModel.Count(q => q.Approved == true),
+                PendingRequests = leaveRequestsModel.Count(q => q.Approved == null),
+                RejectedRequests = leaveRequestsModel.Count(q => q.Approved == false),
                 LeaveRequests = leaveRequestsModel
             };
 
@@ -90,7 +91,7 @@ namespace MyLeaveManagement.Controllers
             }
 
         }
-        public async Task<ActionResult> CancelRequest(int id)
+        public async Task<ActionResult> RejectRequest(int id)
         {
             try
             {
@@ -99,7 +100,7 @@ namespace MyLeaveManagement.Controllers
                 leaveRequest.IsApproved = false;
                 leaveRequest.ApprovedById = user.Id;
                 leaveRequest.DateRequested = DateTime.Now;
-                var isSuccess = await _leaveRequestRepository.UpdateAsync(leaveRequest);
+                await _leaveRequestRepository.UpdateAsync(leaveRequest);
 
                 return RedirectToAction(nameof(Index));
 
@@ -112,6 +113,15 @@ namespace MyLeaveManagement.Controllers
 
         }
 
+        public async Task<ActionResult> CancelRequest(int id)
+        {
+            var leaveRequest = await _leaveRequestRepository.FindByIdAsync(id);
+            leaveRequest.IsApproved = false;
+            _leaveRequestRepository.UpdateAsync(leaveRequest);
+            await _leaveRequestRepository.SaveAsync();
+
+            return RedirectToAction("MyLeave");
+        }
         // GET: LeaveRequestController/Create
         public async Task<ActionResult> Create()
         {
@@ -130,15 +140,6 @@ namespace MyLeaveManagement.Controllers
             return View(model);
 
 
-
-            /*var leaveTypes = _leaveTypeRepository.GetAll();
-            var leaveTItems = leaveTypes.Select(q => new System.Web.Mvc.SelectListItem
-            { Text = q.Name, Value = q.Id.ToString()});
-            var model = new CreateLeaveRequestViewModel
-            {
-                LeaveTypes = leaveTItems
-            };
-            return View(model);*/
 
         }
 
@@ -160,27 +161,28 @@ namespace MyLeaveManagement.Controllers
                     Value = q.Id.ToString()
                 });
                 model.LeaveTypes = leaveTItems;
-
+                var employee = await _userManager.GetUserAsync(User);
+                var allocation = await _leaveAllocationRepository
+                    .GetLeaveAllocationByEmloyeeAndTypeAsync(employee.Id, model.LeaveTypeId);
+                int daysRequsted =
+                    (int)(endDate.Date - startDate.Date).TotalDays;
 
 
                 //Console.WriteLine(model.LeaveTypes.);
-                /*if (ModelState.IsValid==false)
+                if (ModelState.IsValid == false)
                 {
                     return View(model);
-                }*/
+                }
+                if (allocation == null)
+                {
+                    ModelState.AddModelError("", "no vacation days is available");
+                    return View(model);
+                }
                 if (DateTime.Compare(startDate, endDate) > 1)
                 {
                     ModelState.AddModelError("", "start date is bigger than end date");
                     return View(model);
                 }
-                var employee = await _userManager.GetUserAsync(User);
-
-                var allocation = await _leaveAllocationRepository
-                    .GetLeaveAllocationByEmloyeeAndTypeAsync(employee.Id, model.LeaveTypeId);
-
-                int daysRequsted =
-                    (int)(endDate.Date - startDate.Date).TotalDays;
-
                 if (daysRequsted > allocation.NumberOfDays)
                 {
                     ModelState.AddModelError("", "not enought vacation dates");
@@ -199,59 +201,16 @@ namespace MyLeaveManagement.Controllers
                 };
                 var leaveRequest = _mapper.Map<LeaveRequest>(leaveRequestVM);
                 var isSuccess = await _leaveRequestRepository.CreateAsync(leaveRequest);
-                if (!isSuccess)
+                /*if (!isSuccess)
                 {
                     ModelState.AddModelError("", "error while creating leave request in repo");
-                }
+                }*/
                 return RedirectToAction("MyLeave");
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("", "error");
                 return View(model);
-            }
-        }
-
-        // GET: LeaveRequestController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: LeaveRequestController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-
-        // GET: LeaveRequestController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: LeaveRequestController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
 
