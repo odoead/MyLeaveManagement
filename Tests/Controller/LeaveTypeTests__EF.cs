@@ -7,7 +7,7 @@ using MyLeaveManagement.Controllers;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Mappings;
 using MyLeaveManagement.Models;
-using Tests.controller.mocks;
+using Tests.Controller.mocks;
 using Tests.mocks;
 using Xunit;
 

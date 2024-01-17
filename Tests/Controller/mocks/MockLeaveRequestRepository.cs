@@ -1,22 +1,24 @@
 ﻿using Moq;
+using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Repository;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.WebPages;
 
-namespace Tests.controller.mocks
+namespace Tests.mocks
 {
     internal class MockLeaveRequestRepository
     {
-        public static Mock<LeaveRequestRepository> GetMock()
+        public static Mock<ILeaveRequestRepository> GetMock()
         {
-            var mock = new Mock<LeaveRequestRepository>();
+            var mock = new Mock<ILeaveRequestRepository>();
 
-            var allocations = new List<LeaveRequest>()
+            var requests = new List<LeaveRequest>()
             {
                 new LeaveRequest()
                 {
@@ -24,7 +26,7 @@ namespace Tests.controller.mocks
                     RequestingEmployee = new Employee()
                     {
                         Id="ba9581c0",
-                        DateJoined=Convert.ToDateTime("02.12.2023 1:32:57"),
+                        DateJoined=Convert.ToDateTime("02.12.2023 1:24:32"),
                         Email="request@gmail.com",
                         UserName="request@gmail.com",
                         FirstName="firstrequest",
@@ -42,14 +44,16 @@ namespace Tests.controller.mocks
                     ApprovedById="0add2386878f",
                     LeaveTypeId=1,
                     RequestingEmpoyeeId="ba9581c0",
-                    DateRequested=Convert.ToDateTime("02.13.2023 1:40:57"),
-                    DateProvided=Convert.ToDateTime("02.14.2023 1:40:57"),
+                    /*DateRequested=DateTime.ParseExact("02.12.2023 01:40:58","MM.dd.yyyy HH:mm:ss",CultureInfo.InvariantCulture),*/
+                  /*DateRequested=DateTime.ParseExact("02.13.2023 1:40:58","MM.dd.yyyy HH:mm:ss", new CultureInfo("uk-UA")),*/
+                  DateRequested=Convert.ToDateTime("02.12.2023 01:40:58"),
+                    DateProvided=Convert.ToDateTime("03.12.2023 1:41:59"),
                     IsApproved=true,
-                    EndDate=Convert.ToDateTime("02.16.2023 1:40:57"),
-                    StartDate=Convert.ToDateTime("02.15.2023 1:40:57"),
+                    EndDate=Convert.ToDateTime("05.12.2023 1:40:11"),
+                    StartDate=Convert.ToDateTime("07.12.2023 1:40:17"),
                     LeaveType=new LeaveType()
                     {
-                        DateCreated=Convert.ToDateTime("02.12.2023 1:32:57"),
+                        DateCreated=Convert.ToDateTime("02.12.2023 1:32:27"),
                         DefaultDays=10,
                         Id=1,
                         Name="sick leave"
@@ -59,21 +63,21 @@ namespace Tests.controller.mocks
 
             };
             mock.Setup(m => m.CreateAsync(It.IsAny<LeaveRequest>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync(true);
             mock.Setup(m => m.DeleteAsync(It.IsAny<LeaveRequest>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync( true);
             mock.Setup(m => m.FindByIdAsync(It.IsAny<int>()))
-                .Returns((LeaveAllocation Alloc) => allocations.FirstOrDefault(a => a.Id == Alloc.Id));
+                .ReturnsAsync((int T) => requests.FirstOrDefault(a => a.Id == T));
             mock.Setup(m => m.GetAllAsync())
-                .Returns((ICollection<LeaveRequest> allocs) => allocs == allocations);
+                .ReturnsAsync(requests);
             mock.Setup(m => m.GetRequestsByEmployeeAsync(It.IsAny<string>()))
-                .Returns((string id) => allocations.Where(a => a.RequestingEmployee.Id == id).ToList());
+                .ReturnsAsync((string id) => requests.Where(a => a.RequestingEmpoyeeId == id).ToList());
             mock.Setup(m => m.IsExistsAsync(It.IsAny<int>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync((int T) => requests.Exists(a => a.Id == T));
             mock.Setup(m => m.SaveAsync())
-                .Returns((bool q) => q == true);
+                .ReturnsAsync(true);
             mock.Setup(m => m.UpdateAsync(It.IsAny<LeaveRequest>()))
-                .Returns((bool q) => q == true);
+                .ReturnsAsync(true);
             return mock;
         }
     }

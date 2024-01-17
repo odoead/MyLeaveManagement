@@ -26,23 +26,22 @@ namespace MyLeaveManagement.Repository
 
         public async Task<LeaveRequest> FindByIdAsync(int id)
         {
-            /*return await db.LeaveRequests
-                .Include(q => q.RequestingEmployee).
-                Include(q => q.ApprovedById).Include(q => q.LeaveType)
-                .FirstOrDefaultAsync(q => q.Id == id);*/
             var leaveRequest = await db.LeaveRequests
-                .Include(q => q.RequestingEmployee)
-                .Include(q => q.ApprovedBy)
-                .Include(q => q.LeaveType)
-                .FirstOrDefaultAsync(q => q.Id == id);
+               .Include(q => q.RequestingEmployee)
+               .Include(q => q.ApprovedBy)
+               .Include(q => q.LeaveType)
+               .FirstOrDefaultAsync(q => q.Id == id);
             return leaveRequest;
         }
 
         public async Task<ICollection<LeaveRequest>> GetAllAsync()
         {
-            return await db.LeaveRequests
-                .Include(q => q.RequestingEmployee).Include(q => q.ApprovedById).Include(q => q.LeaveType)
+            var leaveRequests = await db.LeaveRequests
+                .Include(q => q.RequestingEmployee)
+                .Include(q => q.ApprovedBy)
+                .Include(q => q.LeaveType)
                 .ToListAsync();
+            return leaveRequests;
         }
 
 
@@ -51,7 +50,8 @@ namespace MyLeaveManagement.Repository
         {
             var request = await GetAllAsync();
 
-            return request.Where(q => q.RequestingEmpoyeeId == employeeId).ToList(); ;
+            return request.Where(q => q.RequestingEmpoyeeId == employeeId)
+            .ToList();
         }
 
         public async Task<bool> IsExistsAsync(int id)

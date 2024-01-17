@@ -1,5 +1,4 @@
 ﻿@model MyLeaveManagement.Models.CreateLeaveRequestViewModel
-
 @{
     ViewData["Title"] = "Create";
 }
@@ -14,8 +13,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="LeaveTypeId" class="control-label"></label>
-                @Html.DropDownListFor(q => q.LeaveTypeId,
-                    new SelectList(Model.LeaveTypes, "Value", "Text"), "Select Leave Type", new { @class = "form-control" })
+
+                @Html.DropDownListFor(q => q.LeaveTypeId, new SelectList(Model.LeaveTypes, "Value", "Text"), "Select Leave Type", new { @class = "form-control" })
                 <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
             </div>
             <div class="row">
@@ -35,11 +34,11 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    <label asp-for="RequestComments" class="control-label"></label>
-                    <textarea asp-for="RequestComments" class="form-control"></textarea>
-                    <span asp-validation-for="RequestComments" class="text-danger"></span>
-                </div>*@
+            <div class="form-group">
+                <label asp-for="RequestComments" class="control-label"></label>
+                <textarea asp-for="RequestComments" class="form-control"></textarea>
+                <span asp-validation-for="RequestComments" class="text-danger"></span>
+            </div>
 
 
 
@@ -54,6 +53,8 @@
     <a class="btn btn-secondary btn-block" asp-action="Index">Back to List</a>
 </div>
 
+
+
 @section Scripts{
     <script>
         $(function () {
@@ -61,4 +62,6 @@
             });
         });
     </script>
+
+
 }

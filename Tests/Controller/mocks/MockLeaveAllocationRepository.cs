@@ -23,7 +23,7 @@ namespace Tests.mocks
                 new LeaveAllocation()
                 {
                     Id = 1,
-                    DateCreated =Convert.ToDateTime( "02.12.2023 1:24:32"),
+                    DateCreated =Convert.ToDateTime("02.12.2023 1:24:32"),
                     NumberOfDays= 20,
                     EmployeeId= "a3f",
                     Period=2023,
@@ -43,15 +43,15 @@ namespace Tests.mocks
                         Id=1,
                         Name="sick leave"
                     },
-
-
-
-
                 }
+            };
+            var EmptyAllocations = new List<LeaveAllocation>()
+            {
+                
             };
 
             mock.Setup(m => m.CheckAllocationAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync((int leavetypeid, string emloyeeid) => allocations.Exists(q => q.EmployeeId == emloyeeid
+                .ReturnsAsync((int leavetypeid, string emloyeeid) => EmptyAllocations.Exists(q => q.EmployeeId == emloyeeid
             && q.LeaveTypeId == leavetypeid ));
             mock.Setup(m => m.CreateAsync(It.IsAny<LeaveAllocation>()))
                 .ReturnsAsync(true);

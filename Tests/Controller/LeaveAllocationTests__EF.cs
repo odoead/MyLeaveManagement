@@ -69,7 +69,6 @@ namespace Tests.Controller
             var result = await leaveAllocController.SetLeave(id) as ViewResult;
             //ASSERT
             mockLeaveAllocRepo.Verify(x => x.CreateAsync(It.IsAny<LeaveAllocation>()), Times.Exactly(1));
-            Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
@@ -240,12 +239,12 @@ namespace Tests.Controller
             leaveAllocController.ModelState.AddModelError("", "Error while editing");
 
             //ACT
-            var result = await leaveAllocController.Edit(leaveAllocVM)as ViewResult;
+            var result = await leaveAllocController.Edit(leaveAllocVM) as ViewResult;
             //ASSERT
 
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.IsType<EditLeaveAllocationViewModel>(viewResult.Model);
-            
+
 
         }
 

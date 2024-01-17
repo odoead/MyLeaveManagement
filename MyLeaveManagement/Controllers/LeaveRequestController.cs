@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Web.WebPages;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace MyLeaveManagement.Controllers
 {
@@ -148,47 +149,42 @@ namespace MyLeaveManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateLeaveRequestViewModel model)//ne rabotaet
         {
-
             try
             {
+
                 var startDate = DateTime.ParseExact(model.StartDate, "MM/dd/yyyy", null);
                 var endDate = DateTime.ParseExact(model.EndDate, "MM/dd/yyyy", null);
                 var leaveTypes = await _leaveTypeRepository.GetAllAsync();
-
+                var employee = await _userManager.GetUserAsync(User);
+                var allocation = await _leaveAllocationRepository
+                    .GetLeaveAllocationByEmloyeeAndTypeAsync(employee.Id, model.LeaveTypeId);
+                int daysRequested = (int)(endDate.Date - startDate.Date).TotalDays;
                 var leaveTItems = leaveTypes.Select(q => new SelectListItem
                 {
                     Text = q.Name,
                     Value = q.Id.ToString()
                 });
                 model.LeaveTypes = leaveTItems;
-                var employee = await _userManager.GetUserAsync(User);
-                var allocation = await _leaveAllocationRepository
-                    .GetLeaveAllocationByEmloyeeAndTypeAsync(employee.Id, model.LeaveTypeId);
-                int daysRequsted =
-                    (int)(endDate.Date - startDate.Date).TotalDays;
 
 
-                //Console.WriteLine(model.LeaveTypes.);
-                if (ModelState.IsValid == false)
-                {
-                    return View(model);
-                }
                 if (allocation == null)
                 {
-                    ModelState.AddModelError("", "no vacation days is available");
-                    return View(model);
+                    ModelState.AddModelError("", "You Have No Days Left");
                 }
                 if (DateTime.Compare(startDate, endDate) > 1)
                 {
-                    ModelState.AddModelError("", "start date is bigger than end date");
-                    return View(model);
+                    ModelState.AddModelError("", "Start Date cannot be further in the future than the End Date");
                 }
-                if (daysRequsted > allocation.NumberOfDays)
+                if (daysRequested > allocation.NumberOfDays)
                 {
-                    ModelState.AddModelError("", "not enought vacation dates");
+                    ModelState.AddModelError("", "You Do Not Sufficient Days For This Request");
+                }
+                if (!ModelState.IsValid)
+                {
                     return View(model);
                 }
-                var leaveRequestVM = new LeaveRequestViewModel
+
+                var leaveRequestModel = new LeaveRequestViewModel
                 {
                     RequestingEmployeeId = employee.Id,
                     StartDate = startDate,
@@ -197,19 +193,17 @@ namespace MyLeaveManagement.Controllers
                     DateRequested = DateTime.Now,
                     DateActioned = DateTime.Now,
                     LeaveTypeId = model.LeaveTypeId,
-
+                    RequestComments = model.RequestComments
                 };
-                var leaveRequest = _mapper.Map<LeaveRequest>(leaveRequestVM);
+
+                var leaveRequest = _mapper.Map<LeaveRequest>(leaveRequestModel);
                 var isSuccess = await _leaveRequestRepository.CreateAsync(leaveRequest);
-                /*if (!isSuccess)
-                {
-                    ModelState.AddModelError("", "error while creating leave request in repo");
-                }*/
+
                 return RedirectToAction("MyLeave");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "error");
+                ModelState.AddModelError("", "Something went wrong");
                 return View(model);
             }
         }

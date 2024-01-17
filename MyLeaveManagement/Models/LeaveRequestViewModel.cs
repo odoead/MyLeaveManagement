@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MyLeaveManagement.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +38,7 @@ namespace MyLeaveManagement.Models
         [Display(Name = "Employee Comments")]
         [MaxLength(300)]
         public string RequestComments { get; set; }
+
     }
 
     public class AdminLeaveRequestViewViewModel
@@ -60,13 +63,13 @@ namespace MyLeaveManagement.Models
         [Display(Name = "End Date")]
         [Required]
         public string EndDate { get; set; }
-
+        [ValidateNever]
+        public IEnumerable<SelectListItem> LeaveTypes { get; set; }
         [Display(Name = "Leave Type")]
         public int LeaveTypeId { get; set; }
-        /*[Display(Name = "Comments")]
+        [Display(Name = "Comments")]
         [MaxLength(300)]
-        public string RequestComments { get; set; }*/
-        public IEnumerable<SelectListItem> LeaveTypes { get; set; }
+        public string RequestComments { get; set; }
 
     }
 
@@ -74,5 +77,6 @@ namespace MyLeaveManagement.Models
     {
         public List<LeaveAllocationViewModel> LeaveAllocations { get; set; }
         public List<LeaveRequestViewModel> LeaveRequests { get; set; }
+
     }
 }
