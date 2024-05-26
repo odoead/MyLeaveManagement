@@ -1,11 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
-
-using System;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,7 +15,10 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
         private readonly UserManager<Employee> _userManager;
         private readonly SignInManager<Employee> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<Employee> userManager, SignInManager<Employee> signInManager)
+        public ConfirmEmailChangeModel(
+            UserManager<Employee> userManager,
+            SignInManager<Employee> signInManager
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,13 +37,11 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("/Index");
             }
-
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
-
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
@@ -52,7 +49,6 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
                 StatusMessage = "Error changing email.";
                 return Page();
             }
-
             // In our UI email and user name are one and the same, so when we update the email
             // we need to update the user name.
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
@@ -61,7 +57,6 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
                 StatusMessage = "Error changing user name.";
                 return Page();
             }
-
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Thank you for confirming your email change.";
             return Page();

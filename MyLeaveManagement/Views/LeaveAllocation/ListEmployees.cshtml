@@ -1,13 +1,9 @@
 ﻿@model IEnumerable<MyLeaveManagement.Models.EmployeeViewModel>
-
 @{
     ViewData["Title"] = "ListEmployees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>List Employees</h1>
-
-
 <table id="MyTable" class="table">
     <thead>
         <tr>
@@ -33,7 +29,6 @@
         @foreach (var item in Model)
         {
             <tr>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>

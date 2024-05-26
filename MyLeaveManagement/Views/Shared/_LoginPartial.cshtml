@@ -1,9 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MyLeaveManagement.Data;
-
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
-
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {

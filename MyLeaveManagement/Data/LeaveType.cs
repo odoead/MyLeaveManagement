@@ -9,5 +9,6 @@ namespace MyLeaveManagement.Data
         public int DefaultDays { get; set; }
         public string Name { get; set; }
         public DateTime? DateCreated { get; set; }
+        public string? TestDaysSTR { get; set; }
     }
 }

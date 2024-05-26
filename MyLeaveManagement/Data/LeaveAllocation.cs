@@ -5,8 +5,6 @@ namespace MyLeaveManagement.Data
 {
     public class LeaveAllocation
     {
-
-
         [Key]
         public int Id { get; set; }
         public int NumberOfDays { get; set; }

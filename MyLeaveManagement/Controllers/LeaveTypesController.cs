@@ -12,6 +12,7 @@ namespace MyLeaveManagement.Controllers
     {
         private readonly IMapper mapper;
         private readonly ILeaveTypeRepository LeaveTypeRepository;
+
         public LeaveTypesController(IMapper mapper, ILeaveTypeRepository repository)
         {
             this.mapper = mapper;
@@ -37,7 +38,6 @@ namespace MyLeaveManagement.Controllers
             }
             var leavetype = await LeaveTypeRepository.FindByIdAsync(id);
             var model = mapper.Map<LeaveTypeViewModel>(leavetype);
-
             return View(model);
         }
 
@@ -127,8 +127,6 @@ namespace MyLeaveManagement.Controllers
             {
                 return BadRequest();
             }
-
-
             return RedirectToAction(nameof(Index));
             /*if (!Repository.isExists(id))
            {
@@ -156,8 +154,6 @@ namespace MyLeaveManagement.Controllers
                 {
                     return View(model);
                 }
-
-
                 return RedirectToAction(nameof(Index));
             }
             catch

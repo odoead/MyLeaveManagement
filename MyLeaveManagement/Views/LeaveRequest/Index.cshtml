@@ -1,12 +1,9 @@
 ﻿@model MyLeaveManagement.Models.AdminLeaveRequestViewViewModel
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -69,7 +66,6 @@
             <th>
                 DateRequested
             </th>
-
             <th>
                 Approval status
             </th>
@@ -96,11 +92,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DateRequested)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.Approved)
                 </td>
-
                 <td>
                     <a class=" btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 </td>

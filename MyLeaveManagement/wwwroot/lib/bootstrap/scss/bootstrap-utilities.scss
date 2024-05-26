@@ -1,6 +1,5 @@
 @import "mixins/banner";
 @include bsBanner(Utilities);
-
 // Configuration
 @import "functions";
 @import "variables";
@@ -8,12 +7,9 @@
 @import "maps";
 @import "mixins";
 @import "utilities";
-
 // Layout & components
 @import "root";
-
 // Helpers
 @import "helpers";
-
 // Utilities
 @import "utilities/api";

@@ -1,6 +1,5 @@
 // This mixin uses an `if()` technique to be compatible with Dart Sass
 // See https://github.com/sass/sass/issues/1873#issuecomment-152293725 for more details
-
 // scss-docs-start form-validation-mixins
 @mixin form-validation-state-selector($state) {
   @if ($state == "valid" or $state == "invalid") {
@@ -14,7 +13,6 @@
     }
   }
 }
-
 @mixin form-validation-state(
   $state,
   $color,
@@ -32,7 +30,6 @@
     font-style: $form-feedback-font-style;
     color: $color;
   }
-
   .#{$state}-tooltip {
     position: absolute;
     top: 100%;
@@ -47,18 +44,15 @@
     background-color: $tooltip-bg-color;
     @include border-radius($form-feedback-tooltip-border-radius);
   }
-
   @include form-validation-state-selector($state) {
     ~ .#{$state}-feedback,
     ~ .#{$state}-tooltip {
       display: block;
     }
   }
-
   .form-control {
     @include form-validation-state-selector($state) {
       border-color: $border-color;
-
       @if $enable-validation-icons {
         padding-right: $input-height-inner;
         background-image: escape-svg($icon);
@@ -66,14 +60,12 @@
         background-position: right $input-height-inner-quarter center;
         background-size: $input-height-inner-half $input-height-inner-half;
       }
-
       &:focus {
         border-color: $border-color;
         box-shadow: $focus-box-shadow;
       }
     }
   }
-
   // stylelint-disable-next-line selector-no-qualifying-type
   textarea.form-control {
     @include form-validation-state-selector($state) {
@@ -83,11 +75,9 @@
       }
     }
   }
-
   .form-select {
     @include form-validation-state-selector($state) {
       border-color: $border-color;
-
       @if $enable-validation-icons {
         &:not([multiple]):not([size]),
         &:not([multiple])[size="1"] {
@@ -97,14 +87,12 @@
           background-size: $form-select-bg-size, $form-select-feedback-icon-size;
         }
       }
-
       &:focus {
         border-color: $border-color;
         box-shadow: $focus-box-shadow;
       }
     }
   }
-
   .form-control-color {
     @include form-validation-state-selector($state) {
       @if $enable-validation-icons {
@@ -112,19 +100,15 @@
       }
     }
   }
-
   .form-check-input {
     @include form-validation-state-selector($state) {
       border-color: $border-color;
-
       &:checked {
         background-color: $color;
       }
-
       &:focus {
         box-shadow: $focus-box-shadow;
       }
-
       ~ .form-check-label {
         color: $color;
       }
@@ -135,7 +119,6 @@
       margin-left: .5em;
     }
   }
-
   .input-group {
     > .form-control:not(:focus),
     > .form-select:not(:focus),

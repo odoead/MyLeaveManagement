@@ -1,13 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Models;
-using MyLeaveManagement.Repository;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace MyLeaveManagement.Controllers
 {
@@ -18,8 +16,13 @@ namespace MyLeaveManagement.Controllers
         private readonly ILeaveTypeRepository _LeaveTypeRepository;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly UserManager<Employee> _userManager;
-        public LeaveAllocationController(IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository,
-            ILeaveTypeRepository leaveTypeRepository, UserManager<Employee> userManager)
+
+        public LeaveAllocationController(
+            IMapper mapper,
+            ILeaveAllocationRepository leaveAllocationRepository,
+            ILeaveTypeRepository leaveTypeRepository,
+            UserManager<Employee> userManager
+        )
         {
             _mapper = mapper;
             _leaveAllocationRepository = leaveAllocationRepository;
@@ -31,7 +34,6 @@ namespace MyLeaveManagement.Controllers
         {
             var leavetype = await _LeaveTypeRepository.FindByIdAsync(id);
             var emloyees = _userManager.GetUsersInRoleAsync("Employee");
-
             foreach (var e in await emloyees)
             {
                 if (await _leaveAllocationRepository.CheckAllocationAsync(id, e.Id))
@@ -48,8 +50,8 @@ namespace MyLeaveManagement.Controllers
                 await _leaveAllocationRepository.CreateAsync(LeaveAllocation);
             }
             return RedirectToAction(nameof(Index));
-
         }
+
         public async Task<ActionResult> ListEmployees()
         {
             var emloyees = await _userManager.GetUsersInRoleAsync("Employee");
@@ -71,11 +73,18 @@ namespace MyLeaveManagement.Controllers
             };
             return View(model);
         }
+
         public async Task<IActionResult> Index()
         {
             var leavetypes = await _LeaveTypeRepository.GetAllAsync();
-            var MappedLeaveTypes = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leavetypes.ToList());
-            var model = new CreateLeaveAllocationViewModel { LeaveTypes = MappedLeaveTypes, NumberUpdated = 0 };
+            var MappedLeaveTypes = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(
+                leavetypes.ToList()
+            );
+            var model = new CreateLeaveAllocationViewModel
+            {
+                LeaveTypes = MappedLeaveTypes,
+                NumberUpdated = 0
+            };
             return View(model);
         }
 
@@ -87,8 +96,14 @@ namespace MyLeaveManagement.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(
+                new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                }
+            );
         }
+
         // GET: LeaveAllocationController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
@@ -121,8 +136,6 @@ namespace MyLeaveManagement.Controllers
             {
                 return View();
             }
-
         }
     }
-
 }

@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyLeaveManagement.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
-
 </head>
 <body>
     <header>
@@ -42,18 +40,15 @@
                                     <a class="btn btn-secondary dropdown-toggle text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                         Manage
                                     </a>
-
                                     <ul class="dropdown-menu " aria-labelledby="dropdownMenuLink">
                                         <li><a class="dropdown-item text-black" asp-controller="LeaveTypes" asp-action="Index">LeaveType</a></li>
                                         <li><a class="dropdown-item text-black" asp-controller="LeaveAllocation" asp-action="Index">Leave Allocation</a></li>
                                         <li><a class="dropdown-item text-black" asp-controller="LeaveRequest" asp-action="Index">Leave Request</a></li>
                                         <li><a class="dropdown-item text-black" asp-controller="LeaveAllocation" asp-action="ListEmployees">Emloyees</a></li>
                                     </ul>
-
                                 </div>
                             }
                         }
-                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -65,7 +60,6 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; @DateTime.Now.Year - MyLeaveManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -77,7 +71,6 @@
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -2,7 +2,5 @@
 
 namespace MyLeaveManagement.Contracts
 {
-    public interface ILeaveTypeRepository : IReposBase<LeaveType>
-    {
-    }
+    public interface ILeaveTypeRepository : IReposBase<LeaveType> { }
 }

@@ -1,11 +1,9 @@
 // Re-assigned maps
 //
 // Placed here so that others can override the default Sass maps and see automatic updates to utilities and more.
-
 // scss-docs-start theme-colors-rgb
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value") !default;
 // scss-docs-end theme-colors-rgb
-
 // scss-docs-start theme-text-map
 $theme-colors-text: (
   "primary": $primary-text-emphasis,
@@ -18,7 +16,6 @@ $theme-colors-text: (
   "dark": $dark-text-emphasis,
 ) !default;
 // scss-docs-end theme-text-map
-
 // scss-docs-start theme-bg-subtle-map
 $theme-colors-bg-subtle: (
   "primary": $primary-bg-subtle,
@@ -31,7 +28,6 @@ $theme-colors-bg-subtle: (
   "dark": $dark-bg-subtle,
 ) !default;
 // scss-docs-end theme-bg-subtle-map
-
 // scss-docs-start theme-border-subtle-map
 $theme-colors-border-subtle: (
   "primary": $primary-border-subtle,
@@ -44,11 +40,9 @@ $theme-colors-border-subtle: (
   "dark": $dark-border-subtle,
 ) !default;
 // scss-docs-end theme-border-subtle-map
-
 $theme-colors-text-dark: null !default;
 $theme-colors-bg-subtle-dark: null !default;
 $theme-colors-border-subtle-dark: null !default;
-
 @if $enable-dark-mode {
   // scss-docs-start theme-text-dark-map
   $theme-colors-text-dark: (
@@ -62,7 +56,6 @@ $theme-colors-border-subtle-dark: null !default;
     "dark": $dark-text-emphasis-dark,
   ) !default;
   // scss-docs-end theme-text-dark-map
-
   // scss-docs-start theme-bg-subtle-dark-map
   $theme-colors-bg-subtle-dark: (
     "primary": $primary-bg-subtle-dark,
@@ -75,7 +68,6 @@ $theme-colors-border-subtle-dark: null !default;
     "dark": $dark-bg-subtle-dark,
   ) !default;
   // scss-docs-end theme-bg-subtle-dark-map
-
   // scss-docs-start theme-border-subtle-dark-map
   $theme-colors-border-subtle-dark: (
     "primary": $primary-border-subtle-dark,
@@ -89,16 +81,13 @@ $theme-colors-border-subtle-dark: null !default;
   ) !default;
   // scss-docs-end theme-border-subtle-dark-map
 }
-
 // Utilities maps
 //
 // Extends the default `$theme-colors` maps to help create our utilities.
-
 // Come v6, we'll de-dupe these variables. Until then, for backward compatibility, we keep them to reassign.
 // scss-docs-start utilities-colors
 $utilities-colors: $theme-colors-rgb !default;
 // scss-docs-end utilities-colors
-
 // scss-docs-start utilities-text-colors
 $utilities-text: map-merge(
   $utilities-colors,
@@ -109,7 +98,6 @@ $utilities-text: map-merge(
   )
 ) !default;
 $utilities-text-colors: map-loop($utilities-text, rgba-css-var, "$key", "text") !default;
-
 $utilities-text-emphasis-colors: (
   "primary-emphasis": var(--#{$prefix}primary-text-emphasis),
   "secondary-emphasis": var(--#{$prefix}secondary-text-emphasis),
@@ -121,7 +109,6 @@ $utilities-text-emphasis-colors: (
   "dark-emphasis": var(--#{$prefix}dark-text-emphasis)
 ) !default;
 // scss-docs-end utilities-text-colors
-
 // scss-docs-start utilities-bg-colors
 $utilities-bg: map-merge(
   $utilities-colors,
@@ -132,7 +119,6 @@ $utilities-bg: map-merge(
   )
 ) !default;
 $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg") !default;
-
 $utilities-bg-subtle: (
   "primary-subtle": var(--#{$prefix}primary-bg-subtle),
   "secondary-subtle": var(--#{$prefix}secondary-bg-subtle),
@@ -144,7 +130,6 @@ $utilities-bg-subtle: (
   "dark-subtle": var(--#{$prefix}dark-bg-subtle)
 ) !default;
 // scss-docs-end utilities-bg-colors
-
 // scss-docs-start utilities-border-colors
 $utilities-border: map-merge(
   $utilities-colors,
@@ -154,7 +139,6 @@ $utilities-border: map-merge(
   )
 ) !default;
 $utilities-border-colors: map-loop($utilities-border, rgba-css-var, "$key", "border") !default;
-
 $utilities-border-subtle: (
   "primary-subtle": var(--#{$prefix}primary-border-subtle),
   "secondary-subtle": var(--#{$prefix}secondary-border-subtle),
@@ -166,9 +150,6 @@ $utilities-border-subtle: (
   "dark-subtle": var(--#{$prefix}dark-border-subtle)
 ) !default;
 // scss-docs-end utilities-border-colors
-
 $utilities-links-underline: map-loop($utilities-colors, rgba-css-var, "$key", "link-underline") !default;
-
 $negative-spacers: if($enable-negative-margins, negativify-map($spacers), null) !default;
-
 $gutters: $spacers !default;

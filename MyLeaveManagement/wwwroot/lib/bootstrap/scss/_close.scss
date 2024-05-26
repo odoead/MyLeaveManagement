@@ -2,7 +2,6 @@
 // iOS requires the button element instead of an anchor tag.
 // If you want the anchor version, it requires `href="#"`.
 // See https://developer.mozilla.org/en-US/docs/Web/Events/click#Safari_Mobile
-
 .btn-close {
   // scss-docs-start close-css-vars
   --#{$prefix}btn-close-color: #{$btn-close-color};
@@ -14,7 +13,6 @@
   --#{$prefix}btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
   --#{$prefix}btn-close-white-filter: #{$btn-close-white-filter};
   // scss-docs-end close-css-vars
-
   box-sizing: content-box;
   width: $btn-close-width;
   height: $btn-close-height;
@@ -24,20 +22,17 @@
   border: 0; // for button elements
   @include border-radius();
   opacity: var(--#{$prefix}btn-close-opacity);
-
   // Override <a>'s hover style
   &:hover {
     color: var(--#{$prefix}btn-close-color);
     text-decoration: none;
     opacity: var(--#{$prefix}btn-close-hover-opacity);
   }
-
   &:focus {
     outline: 0;
     box-shadow: var(--#{$prefix}btn-close-focus-shadow);
     opacity: var(--#{$prefix}btn-close-focus-opacity);
   }
-
   &:disabled,
   &.disabled {
     pointer-events: none;
@@ -45,15 +40,12 @@
     opacity: var(--#{$prefix}btn-close-disabled-opacity);
   }
 }
-
 @mixin btn-close-white() {
   filter: var(--#{$prefix}btn-close-white-filter);
 }
-
 .btn-close-white {
   @include btn-close-white();
 }
-
 @if $enable-dark-mode {
   @include color-mode(dark) {
     .btn-close {

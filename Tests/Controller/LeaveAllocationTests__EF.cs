@@ -7,12 +7,6 @@ using MyLeaveManagement.Controllers;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Mappings;
 using MyLeaveManagement.Models;
-using MyLeaveManagement.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.Controller.mocks;
 using Tests.mocks;
 
@@ -24,15 +18,19 @@ namespace Tests.Controller
         private readonly Mock<ILeaveTypeRepository> mockLeaveTypeRepository;
         private readonly LeaveAllocationController leaveAllocController;
         private readonly Mock<UserManager<Employee>> mockUser;
+
         public LeaveAllocationTests__EF()
         {
             mockLeaveAllocRepo = MockLeaveAllocationRepository.GetMock();
             mockLeaveTypeRepository = MockLeaveTypeRepository.GetMock();
             mockUser = MockUserManager.GetMock();
             var mapper = GetMapper();
-            leaveAllocController =
-                new LeaveAllocationController(mapper, mockLeaveAllocRepo.Object, mockLeaveTypeRepository.Object, mockUser.Object);
-
+            leaveAllocController = new LeaveAllocationController(
+                mapper,
+                mockLeaveAllocRepo.Object,
+                mockLeaveTypeRepository.Object,
+                mockUser.Object
+            );
         }
 
         public IMapper GetMapper()
@@ -41,15 +39,13 @@ namespace Tests.Controller
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(mappingProfile));
             return new Mapper(configuration);
         }
+
         [Fact]
         public async Task Index_ModelType_IsCreateLeaveAllocationVM()
         {
             //ARRANGE
-
-
             //ACT
-            var result = await leaveAllocController.Index() as ViewResult;
-
+            var result = await leaveAllocController.Index();
             //ASSERT
             Assert.NotNull(result);
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -62,24 +58,24 @@ namespace Tests.Controller
             //ARRANGE
             LeaveAllocation? leaveType = null;
             int id = 1;
-            mockLeaveAllocRepo.Setup(r => r.CreateAsync(It.IsAny<LeaveAllocation>()))
+            mockLeaveAllocRepo
+                .Setup(r => r.CreateAsync(It.IsAny<LeaveAllocation>()))
                 .Callback<LeaveAllocation>(x => leaveType = x);
-
             //ACT
             var result = await leaveAllocController.SetLeave(id) as ViewResult;
             //ASSERT
-            mockLeaveAllocRepo.Verify(x => x.CreateAsync(It.IsAny<LeaveAllocation>()), Times.Exactly(1));
+            mockLeaveAllocRepo.Verify(
+                x => x.CreateAsync(It.IsAny<LeaveAllocation>()),
+                Times.Exactly(1)
+            );
         }
 
         [Fact]
         public async Task ListEmployees_ReturnsViewWithModel()
         {
             // ARRANGE
-
-
             //ACT
             var result = await leaveAllocController.ListEmployees();
-
             //ASSERT
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<List<EmployeeViewModel>>(viewResult.Model);
@@ -89,26 +85,19 @@ namespace Tests.Controller
         public async Task Details_ReturnsViewWithModel()
         {
             // ARRANGE
-
-
             //ACT
             var result = await leaveAllocController.Details("a3f");
-
             //ASSERT
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<ViewAllocationsViewModel>(viewResult.Model);
-
         }
 
         [Fact]
         public async Task Details_ReturnsExactNumberOfAlloc()
         {
             // ARRANGE
-
-
             //ACT
             var result = await leaveAllocController.Details("a3f");
-
             //ASSERT
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsType<ViewAllocationsViewModel>(viewResult.Model);
@@ -122,25 +111,23 @@ namespace Tests.Controller
         {
             //ARRANGE
             int id = 1;
-
             //ACT
             var result = await leaveAllocController.Edit(id) as ViewResult;
             //ASSERT
-
             var viewResult = Assert.IsType<ViewResult>(result);
             var leave = Assert.IsType<EditLeaveAllocationViewModel>(viewResult.Model);
             Assert.Equal(1, leave.id);
-
         }
+
         [Fact]
         public async Task EditPOST_ValidModel_RedirectsToDetails()
         {
             // ARRANGE
             /*EditLeaveAllocationViewModel EditLeaveAllocationVM;
             LeaveType? alloc = null;
-           *//* mockLeaveAllocRepo.Setup(r => r.UpdateAsync(It.IsAny<LeaveAllocation>()))
-                .Callback<LeaveType>(x => alloc = x);*/
-
+           */
+            /* mockLeaveAllocRepo.Setup(r => r.UpdateAsync(It.IsAny<LeaveAllocation>()))
+                            .Callback<LeaveType>(x => alloc = x);*/
             var leaveAllocVM = new EditLeaveAllocationViewModel()
             {
                 LeaveType = new LeaveTypeViewModel
@@ -162,17 +149,14 @@ namespace Tests.Controller
                 EmployeeId = "a3f",
                 id = 1,
                 NumberOfDays = 5,
-
             };
             //ACT
             var result = await leaveAllocController.Edit(leaveAllocVM);
-
             //ASSERT
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Details", redirectToActionResult.ActionName);
             Assert.Equal("a3f", redirectToActionResult.RouteValues["id"]);
         }
-
 
         [Fact]
         public async Task EditPOST_InvalidModelState_UpdateNeverExecutes()
@@ -199,10 +183,8 @@ namespace Tests.Controller
                 EmployeeId = "a3f",
                 id = 1,
                 NumberOfDays = 5,
-
             };
             leaveAllocController.ModelState.AddModelError("DefaultDays", "Enter valid days");
-
             //ACT
             var result = await leaveAllocController.Edit(leaveAllocVM);
             //ASSERT
@@ -234,23 +216,13 @@ namespace Tests.Controller
                 EmployeeId = "a3f",
                 id = 1,
                 NumberOfDays = 5,
-
             };
             leaveAllocController.ModelState.AddModelError("", "Error while editing");
-
             //ACT
             var result = await leaveAllocController.Edit(leaveAllocVM) as ViewResult;
             //ASSERT
-
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.IsType<EditLeaveAllocationViewModel>(viewResult.Model);
-
-
         }
-
-
-
-
-
     }
 }

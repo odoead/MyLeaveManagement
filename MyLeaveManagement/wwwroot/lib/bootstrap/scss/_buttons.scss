@@ -1,7 +1,6 @@
 //
 // Base styles
 //
-
 .btn {
   // scss-docs-start btn-css-vars
   --#{$prefix}btn-padding-x: #{$btn-padding-x};
@@ -20,7 +19,6 @@
   --#{$prefix}btn-disabled-opacity: #{$btn-disabled-opacity};
   --#{$prefix}btn-focus-box-shadow: 0 0 0 #{$btn-focus-width} rgba(var(--#{$prefix}btn-focus-shadow-rgb), .5);
   // scss-docs-end btn-css-vars
-
   display: inline-block;
   padding: var(--#{$prefix}btn-padding-y) var(--#{$prefix}btn-padding-x);
   font-family: var(--#{$prefix}btn-font-family);
@@ -39,21 +37,18 @@
   @include gradient-bg(var(--#{$prefix}btn-bg));
   @include box-shadow(var(--#{$prefix}btn-box-shadow));
   @include transition($btn-transition);
-
   &:hover {
     color: var(--#{$prefix}btn-hover-color);
     text-decoration: if($link-hover-decoration == underline, none, null);
     background-color: var(--#{$prefix}btn-hover-bg);
     border-color: var(--#{$prefix}btn-hover-border-color);
   }
-
   .btn-check + &:hover {
     // override for the checkbox/radio buttons
     color: var(--#{$prefix}btn-color);
     background-color: var(--#{$prefix}btn-bg);
     border-color: var(--#{$prefix}btn-border-color);
   }
-
   &:focus-visible {
     color: var(--#{$prefix}btn-hover-color);
     @include gradient-bg(var(--#{$prefix}btn-hover-bg));
@@ -66,7 +61,6 @@
       box-shadow: var(--#{$prefix}btn-focus-box-shadow);
     }
   }
-
   .btn-check:focus-visible + & {
     border-color: var(--#{$prefix}btn-hover-border-color);
     outline: 0;
@@ -77,7 +71,6 @@
       box-shadow: var(--#{$prefix}btn-focus-box-shadow);
     }
   }
-
   .btn-check:checked + &,
   :not(.btn-check) + &:active,
   &:first-child:active,
@@ -89,7 +82,6 @@
     background-image: if($enable-gradients, none, null);
     border-color: var(--#{$prefix}btn-active-border-color);
     @include box-shadow(var(--#{$prefix}btn-active-shadow));
-
     &:focus-visible {
       // Avoid using mixin so we can pass custom focus shadow properly
       @if $enable-shadows {
@@ -99,7 +91,6 @@
       }
     }
   }
-
   &:disabled,
   &.disabled,
   fieldset:disabled & {
@@ -112,12 +103,9 @@
     @include box-shadow(none);
   }
 }
-
-
 //
 // Alternate buttons
 //
-
 // scss-docs-start btn-variant-loops
 @each $color, $value in $theme-colors {
   .btn-#{$color} {
@@ -144,19 +132,15 @@
     }
   }
 }
-
 @each $color, $value in $theme-colors {
   .btn-outline-#{$color} {
     @include button-outline-variant($value);
   }
 }
 // scss-docs-end btn-variant-loops
-
-
 //
 // Link buttons
 //
-
 // Make a button look and behave like a link
 .btn-link {
   --#{$prefix}btn-font-weight: #{$font-weight-normal};
@@ -171,37 +155,28 @@
   --#{$prefix}btn-disabled-border-color: transparent;
   --#{$prefix}btn-box-shadow: 0 0 0 #000; // Can't use `none` as keyword negates all values when used with multiple shadows
   --#{$prefix}btn-focus-shadow-rgb: #{$btn-link-focus-shadow-rgb};
-
   text-decoration: $link-decoration;
   @if $enable-gradients {
     background-image: none;
   }
-
   &:hover,
   &:focus-visible {
     text-decoration: $link-hover-decoration;
   }
-
   &:focus-visible {
     color: var(--#{$prefix}btn-color);
   }
-
   &:hover {
     color: var(--#{$prefix}btn-hover-color);
   }
-
   // No need for an active state here
 }
-
-
 //
 // Button Sizes
 //
-
 .btn-lg {
   @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $btn-font-size-lg, $btn-border-radius-lg);
 }
-
 .btn-sm {
   @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
 }

@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using MyLeaveManagement.Data;
 using MyLeaveManagement.Models;
-using System.Runtime;
 
 namespace MyLeaveManagement.Mappings
 {
     public class Maps : Profile
     {
-
-
         public Maps()
         {
             CreateMap<LeaveType, LeaveTypeViewModel>().ReverseMap();
@@ -16,7 +13,6 @@ namespace MyLeaveManagement.Mappings
             CreateMap<Employee, EmployeeViewModel>().ReverseMap();
             CreateMap<LeaveAllocation, LeaveAllocationViewModel>().ReverseMap();
             CreateMap<LeaveAllocation, EditLeaveAllocationViewModel>().ReverseMap();
-
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 #nullable disable
-
 namespace MyLeaveManagement.Data.Migrations
 {
     public partial class base_create : Migration
@@ -15,13 +12,14 @@ namespace MyLeaveManagement.Data.Migrations
                 type: "datetime2",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "datetime2");
-
+                oldType: "datetime2"
+            );
             migrationBuilder.CreateTable(
                 name: "DetailsTypeViewModel",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table
+                        .Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -29,14 +27,13 @@ namespace MyLeaveManagement.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DetailsTypeViewModel", x => x.Id);
-                });
+                }
+            );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "DetailsTypeViewModel");
-
+            migrationBuilder.DropTable(name: "DetailsTypeViewModel");
             migrationBuilder.AlterColumn<DateTime>(
                 name: "DateCreated",
                 table: "leaveTypes",
@@ -45,7 +42,8 @@ namespace MyLeaveManagement.Data.Migrations
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
     }
 }

@@ -1,14 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
-
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using MyLeaveManagement.Data;
 
 namespace MyLeaveManagement.Areas.Identity.Pages.Account.Manage
@@ -22,7 +18,8 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account.Manage
         public DeletePersonalDataModel(
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -64,7 +61,6 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             RequirePassword = await _userManager.HasPasswordAsync(user);
             return Page();
         }
@@ -76,7 +72,6 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             RequirePassword = await _userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
@@ -86,18 +81,14 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account.Manage
                     return Page();
                 }
             }
-
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleting user.");
             }
-
             await _signInManager.SignOutAsync();
-
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
-
             return Redirect("~/");
         }
     }

@@ -1,6 +1,6 @@
-﻿using MyLeaveManagement.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using MyLeaveManagement.Contracts;
 using MyLeaveManagement.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace MyLeaveManagement.Repository
 {
@@ -12,6 +12,7 @@ namespace MyLeaveManagement.Repository
         {
             this.db = db;
         }
+
         public async Task<bool> CreateAsync(LeaveRequest entity)
         {
             await db.LeaveRequests.AddAsync(entity);
@@ -26,32 +27,28 @@ namespace MyLeaveManagement.Repository
 
         public async Task<LeaveRequest> FindByIdAsync(int id)
         {
-            var leaveRequest = await db.LeaveRequests
-               .Include(q => q.RequestingEmployee)
-               .Include(q => q.ApprovedBy)
-               .Include(q => q.LeaveType)
-               .FirstOrDefaultAsync(q => q.Id == id);
+            var leaveRequest = await db
+                .LeaveRequests.Include(q => q.RequestingEmployee)
+                .Include(q => q.ApprovedBy)
+                .Include(q => q.LeaveType)
+                .FirstOrDefaultAsync(q => q.Id == id);
             return leaveRequest;
         }
 
         public async Task<ICollection<LeaveRequest>> GetAllAsync()
         {
-            var leaveRequests = await db.LeaveRequests
-                .Include(q => q.RequestingEmployee)
+            var leaveRequests = await db
+                .LeaveRequests.Include(q => q.RequestingEmployee)
                 .Include(q => q.ApprovedBy)
                 .Include(q => q.LeaveType)
                 .ToListAsync();
             return leaveRequests;
         }
 
-
-
         public async Task<ICollection<LeaveRequest>> GetRequestsByEmployeeAsync(string employeeId)
         {
             var request = await GetAllAsync();
-
-            return request.Where(q => q.RequestingEmpoyeeId == employeeId)
-            .ToList();
+            return request.Where(q => q.RequestingEmpoyeeId == employeeId).ToList();
         }
 
         public async Task<bool> IsExistsAsync(int id)
@@ -64,8 +61,8 @@ namespace MyLeaveManagement.Repository
         {
             var IsChanged = await db.SaveChangesAsync();
             return IsChanged > 0;
-
         }
+
         public async Task<bool> UpdateAsync(LeaveRequest entity)
         {
             db.Update(entity);

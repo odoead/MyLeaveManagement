@@ -1,24 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using MyLeaveManagement.Data;
 
 namespace MyLeaveManagement.Areas.Identity.Pages.Account
@@ -37,7 +25,8 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
             IUserStore<Employee> userStore,
             SignInManager<Employee> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender
+        )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -87,7 +76,11 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(
+                100,
+                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+                MinimumLength = 6
+            )]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -98,14 +91,17 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare(
+                "Password",
+                ErrorMessage = "The password and confirmation password do not match."
+            )]
             public string ConfirmPassword { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
             [RegularExpression("^[A-Za-z]+$", ErrorMessage = "only alphabet")]
-            [Display(Name ="First name")]
-            [MaxLength( 40,ErrorMessage ="Maximum 40 characters")]
+            [Display(Name = "First name")]
+            [MaxLength(40, ErrorMessage = "Maximum 40 characters")]
             public string FirstName { get; set; }
 
             [Required]
@@ -114,47 +110,43 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
             [Display(Name = "Last name")]
             [MaxLength(40, ErrorMessage = "Maximum 40 characters")]
             public string LastName { get; set; }
-
-
         }
-
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (
+                await _signInManager.GetExternalAuthenticationSchemesAsync()
+            ).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (
+                await _signInManager.GetExternalAuthenticationSchemesAsync()
+            ).ToList();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.LastName = Input.LastName;
                 user.FirstName = Input.FirstName;
-                user.DateJoined=DateTime.Now;
+                user.DateJoined = DateTime.Now;
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
                     await _userManager.AddToRoleAsync(user, "Employee");
-                    
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }
@@ -167,9 +159,11 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(Employee)}'. " +
-                    $"Ensure that '{nameof(Employee)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                throw new InvalidOperationException(
+                    $"Can't create an instance of '{nameof(Employee)}'. "
+                        + $"Ensure that '{nameof(Employee)}' is not an abstract class and has a parameterless constructor, or alternatively "
+                        + $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml"
+                );
             }
         }
 
@@ -177,7 +171,9 @@ namespace MyLeaveManagement.Areas.Identity.Pages.Account
         {
             if (!_userManager.SupportsUserEmail)
             {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
+                throw new NotSupportedException(
+                    "The default UI requires a user store with email support."
+                );
             }
             return (IUserEmailStore<Employee>)_userStore;
         }

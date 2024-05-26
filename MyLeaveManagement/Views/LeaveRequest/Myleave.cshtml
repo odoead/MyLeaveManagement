@@ -1,9 +1,7 @@
 ﻿@model MyLeaveManagement.Models.EmployeeLeaveRequestViewViewModel
-
 @{
     ViewData["Title"] = "MyLeave";
 }
-
 <h1>My Leave Allocations</h1>
 <div class="jumbotron">
     <div class="card">
@@ -17,8 +15,6 @@
         </ul>
     </div>
 </div>
-
-
 <hr />
 <h1>My Leave Records</h1>
 <table id="tblData" class="table">
@@ -36,11 +32,9 @@
             <th>
                 Date Requested
             </th>
-
             <th>
                 Approval State
             </th>
-
             <th>
                 Cancel Request
             </th>
@@ -59,11 +53,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.DateRequested, new { @value = item.DateRequested.ToString("yyyy-mm-dd") })
                 </td>
-
                 <td>
                     @if (item.Cancelled)
                     {
@@ -82,7 +74,6 @@
                         <span class="badge badge-warning">Pending Approval</span>
                     }
                 </td>
-
                 <td>
                     @if ((!item.Cancelled && item.StartDate > DateTime.Now))
                     {
@@ -90,7 +81,6 @@
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </a>
                     }
-
                 </td>
             </tr>
         }
